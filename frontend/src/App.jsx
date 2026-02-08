@@ -2,9 +2,39 @@ import React, { useState } from 'react';
 import Vitals from './components/Vitals';
 import TerminalLog from './components/TerminalLog';
 import ActionDeck from './components/ActionDeck';
-import { Syringe, Activity } from 'lucide-react'; // Import icons
 
 const API_URL = 'http://localhost:8000';
+
+// --- BACKGROUND PULSE ANIMATION COMPONENT ---
+const BackgroundPulse = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center opacity-20">
+    <svg
+      viewBox="0 0 1000 200"
+      className="w-full h-full text-bio-green"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M0,100 L100,100 L120,40 L140,160 L160,100 L250,100 L270,10 L290,190 L310,100 L1000,100"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        vectorEffect="non-scaling-stroke"
+        className="animate-ekg"
+      />
+    </svg>
+    <style>{`
+      @keyframes ekgMove {
+        0% { stroke-dashoffset: 1000; }
+        100% { stroke-dashoffset: 0; }
+      }
+      .animate-ekg {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: ekgMove 3s linear infinite;
+      }
+    `}</style>
+  </div>
+);
 
 function App() {
   const [gameId, setGameId] = useState(null);
@@ -93,20 +123,18 @@ function App() {
     <div className="min-h-screen p-4 md:p-8 flex flex-col relative crt-flicker font-mono">
       <div className="scanlines"></div>
       
-      <h1 className="text-4xl text-center mb-8 font-bold tracking-widest text-shadow-glow">
+      {/* Background Pulse Animation (Only visible in Start Screen) */}
+      {phase === 'START' && <BackgroundPulse />}
+
+      {/* Main Title - Lowered margin-top (mt-24) to reduce gap */}
+      <h1 className="text-4xl text-center mb-12 mt-24 font-bold tracking-widest text-shadow-glow z-20 relative">
         BIO-LOGIC PROTOCOL v2.5
       </h1>
 
       {phase === 'START' && (
-        <div className="flex-1 flex items-center justify-center z-10 gap-12">
-            
-            {/* Left Decoration: Injection */}
-            <div className="hidden md:flex flex-col items-center opacity-80">
-                <Syringe size={120} className="text-bio-green rotate-[-45deg] drop-shadow-[0_0_10px_rgba(0,255,0,0.5)]" />
-            </div>
-
+        <div className="flex-1 flex items-start justify-center z-10">
             {/* Main Menu Box */}
-            <div className="w-full max-w-lg border-2 border-bio-green p-10 text-center bg-black relative shadow-[0_0_30px_rgba(0,255,0,0.2)]">
+            <div className="w-full max-w-lg border-2 border-bio-green p-10 text-center bg-black/90 relative shadow-[0_0_30px_rgba(0,255,0,0.2)]">
             <p className="mb-8 text-3xl font-bold tracking-wider text-bio-green">DIFFICULTY</p>
             <div className="flex flex-col gap-6">
                 <button onClick={() => startGame('easy')} className="border-2 border-bio-green p-4 text-xl hover:bg-bio-green hover:text-black transition-all font-bold tracking-widest">
@@ -119,11 +147,6 @@ function App() {
                 HARD
                 </button>
             </div>
-            </div>
-
-            {/* Right Decoration: Heart Monitor */}
-            <div className="hidden md:flex flex-col items-center opacity-80">
-                <Activity size={120} className="text-bio-green animate-pulse drop-shadow-[0_0_10px_rgba(0,255,0,0.5)]" />
             </div>
         </div>
       )}
