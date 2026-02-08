@@ -62,7 +62,6 @@ function App() {
 
   const startGame = async (diff) => {
     setDifficulty(diff);
-    // UPDATED: All Caps
     addLog('system', 'RETRIEVING PATIENT SYMPTOMS...');
     
     try {
@@ -115,13 +114,12 @@ function App() {
         setPhase('END');
       } else if (data.status === 'LOSE') {
         setHp(0);
-        setModal({ title: 'PATIENT DECEASED', msg: data.analysis, type: 'lose' });
+        // UPDATED: Changed Title Here
+        setModal({ title: 'PATIENT FLATLINED', msg: data.analysis, type: 'lose' });
         setPhase('END');
       } else {
         setHp(data.hp);
-        // Correctly formatted incorrect message
         addLog('diagnosis', `${data.message}`);
-        // UPDATED: All Caps
         addLog('system', 'RE-INITIALIZING TESTS...');
         
         if (data.test_options) {
@@ -139,7 +137,7 @@ function App() {
       {/* Background Pulse Animation (Visible only in Start Screen) */}
       {phase === 'START' && <BackgroundPulse />}
 
-      {/* Main Title - UPDATED: Changed mt-32 to mt-20 to move it higher */}
+      {/* Main Title */}
       {phase === 'START' && (
         <h1 className="text-6xl text-center mb-10 mt-20 font-bold tracking-widest text-shadow-glow z-20 relative">
           FLATLINE
