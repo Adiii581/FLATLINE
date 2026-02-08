@@ -7,30 +7,29 @@ const API_URL = 'http://localhost:8000';
 
 // --- BACKGROUND PULSE ANIMATION COMPONENT ---
 const BackgroundPulse = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center opacity-20">
+  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center opacity-50">
     <svg
-      viewBox="0 0 1000 200"
-      className="w-full h-full text-bio-green"
+      viewBox="0 0 1200 200"
+      className="w-full h-full text-bio-green drop-shadow-[0_0_15px_rgba(0,255,0,0.8)]"
       preserveAspectRatio="none"
     >
       <path
-        d="M0,100 L100,100 L120,40 L140,160 L160,100 L250,100 L270,10 L290,190 L310,100 L1000,100"
+        d="M-100,100 L100,100 L120,40 L140,160 L160,100 L250,100 L270,10 L290,190 L310,100 L1300,100"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="3"
         vectorEffect="non-scaling-stroke"
         className="animate-ekg"
       />
     </svg>
     <style>{`
       @keyframes ekgMove {
-        0% { stroke-dashoffset: 1000; }
+        0% { stroke-dashoffset: 2400; }
         100% { stroke-dashoffset: 0; }
       }
       .animate-ekg {
-        stroke-dasharray: 1000;
-        stroke-dashoffset: 1000;
-        animation: ekgMove 3s linear infinite;
+        stroke-dasharray: 1200 1200;
+        animation: ekgMove 4s linear infinite;
       }
     `}</style>
   </div>
@@ -108,7 +107,8 @@ function App() {
         setPhase('END');
       } else {
         setHp(data.hp);
-        addLog('diagnosis', `INCORRECT. ${data.message}`);
+        // FIXED: Removed redundant "INCORRECT." text prefix
+        addLog('diagnosis', `${data.message}`);
         addLog('system', 'RE-INITIALIZING TEST PROTOCOLS...');
         
         if (data.test_options) {
@@ -123,13 +123,15 @@ function App() {
     <div className="min-h-screen p-4 md:p-8 flex flex-col relative crt-flicker font-mono">
       <div className="scanlines"></div>
       
-      {/* Background Pulse Animation (Only visible in Start Screen) */}
+      {/* Background Pulse Animation (Visible only in Start Screen) */}
       {phase === 'START' && <BackgroundPulse />}
 
-      {/* Main Title - Lowered margin-top (mt-24) to reduce gap */}
-      <h1 className="text-4xl text-center mb-12 mt-24 font-bold tracking-widest text-shadow-glow z-20 relative">
-        BIO-LOGIC PROTOCOL v2.5
-      </h1>
+      {/* Main Title - Only visible in START phase now */}
+      {phase === 'START' && (
+        <h1 className="text-4xl text-center mb-12 mt-24 font-bold tracking-widest text-shadow-glow z-20 relative">
+          BIO-LOGIC PROTOCOL v2.5
+        </h1>
+      )}
 
       {phase === 'START' && (
         <div className="flex-1 flex items-start justify-center z-10">
@@ -152,7 +154,7 @@ function App() {
       )}
 
       {phase !== 'START' && (
-        <div className="max-w-5xl mx-auto w-full z-10 flex flex-col h-[85vh]">
+        <div className="max-w-5xl mx-auto w-full z-10 flex flex-col h-[90vh] justify-center">
           <Vitals hp={hp} maxHp={maxHp} difficulty={difficulty} />
           <TerminalLog logs={logs} />
           {phase !== 'END' && (
