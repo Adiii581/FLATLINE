@@ -14,14 +14,14 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Use a widely available model
-MODEL_NAME = 'gemini-1.5-flash' 
+MODEL_NAME = 'gemini-1.5-flash'
 
 app = FastAPI()
 
 # Enable CORS for Frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,8 +45,6 @@ class DiagnosisSubmission(BaseModel):
 # --- HELPER: ROBUST JSON PARSER ---
 def clean_and_parse_json(text):
     # Removes markdown code blocks (```json ... ```)
-    text =YW re.sub(r"```(json)?", "", text).strip()
-    # Wait, fixing the typo above manually just in case:
     text = re.sub(r"```(json)?", "", text).strip()
     
     try:
