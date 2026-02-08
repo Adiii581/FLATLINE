@@ -4,7 +4,7 @@ FLATLINE is a retro/arcade style medical simulation/game where players uses test
 
 ## Tech Stack
 
-- **Frontend**: React (Vite), and Tailwind CSS
+- **Frontend**: JavaScript, React (Vite), HTML, Tailwind CSS
 - **Backend**: Python, FastAPI, RestAPI, and Pydantic
 - **AI Engine**: Google Gemini API (gemini-2.5-flash)
 
