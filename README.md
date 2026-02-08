@@ -23,7 +23,7 @@ Follow these steps to get the system running locally. You will need two terminal
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/Adiii581/flatline.git
+git clone https://github.com/Adiii581/FLATLINE.git
 cd flatline
 ```
 
