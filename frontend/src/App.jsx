@@ -139,9 +139,9 @@ function App() {
       {/* Background Pulse Animation (Visible only in Start Screen) */}
       {phase === 'START' && <BackgroundPulse />}
 
-      {/* Main Title */}
+      {/* Main Title - UPDATED: Changed mt-32 to mt-20 to move it higher */}
       {phase === 'START' && (
-        <h1 className="text-6xl text-center mb-12 mt-32 font-bold tracking-widest text-shadow-glow z-20 relative">
+        <h1 className="text-6xl text-center mb-10 mt-20 font-bold tracking-widest text-shadow-glow z-20 relative">
           FLATLINE
         </h1>
       )}
