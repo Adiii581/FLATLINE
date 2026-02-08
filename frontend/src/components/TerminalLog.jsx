@@ -8,10 +8,10 @@ const TerminalLog = ({ logs }) => {
   }, [logs]);
 
   return (
-    <div className="flex-1 border-2 border-bio-dark-green bg-black p-4 mb-4 overflow-y-auto font-mono text-sm h-64 shadow-[inset_0_0_20px_#001100]">
+    <div className="flex-1 border-2 border-bio-dark-green bg-black p-6 mb-6 overflow-y-auto font-mono text-lg h-64 shadow-[inset_0_0_20px_#001100]">
       {logs.map((log, idx) => (
-        <div key={idx} className="mb-2">
-          <span className="text-gray-500">[{new Date().toLocaleTimeString()}]</span>
+        <div key={idx} className="mb-3 leading-relaxed">
+          <span className="text-gray-500 text-base">[{new Date().toLocaleTimeString()}]</span>
           {log.type === 'system' && <span className="text-bio-orange font-bold"> SYSTEM: </span>}
           {log.type === 'narrative' && <span className="text-bio-green"> {'>'} </span>}
           {log.type === 'action' && <span className="text-cyan-400"> CMD: </span>}
