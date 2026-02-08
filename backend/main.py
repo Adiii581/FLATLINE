@@ -2,19 +2,19 @@ import os
 import uuid
 import json
 import re
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-fromqh dotenv import load_dotenv
+from dotenv import load_dotenv
 import google.generativeai as genai
 
 # --- CONFIGURATION ---
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Using Gemini 2.5 Flash for speed and cost efficiency
-MODEL_NAME = 'gemini-2.5-flash' 
+# Use a widely available model
+MODEL_NAME = 'gemini-1.5-flash' 
 
 app = FastAPI()
 
@@ -28,7 +28,6 @@ app.add_middleware(
 )
 
 # --- IN-MEMORY DATABASE ---
-# Stores game state. In production, use Redis/Postgres.
 games: Dict[str, dict] = {}
 
 # --- DATA MODELS ---
@@ -45,14 +44,17 @@ class DiagnosisSubmission(BaseModel):
 
 # --- HELPER: ROBUST JSON PARSER ---
 def clean_and_parse_json(text):
-    # Removes markdown code blocks (```json ... ```) if the AI adds them
+    # Removes markdown code blocks (```json ... ```)
+    text =YW re.sub(r"```(json)?", "", text).strip()
+    # Wait, fixing the typo above manually just in case:
     text = re.sub(r"```(json)?", "", text).strip()
+    
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        # Fallback if AI output is malformed
+        print(f"JSON Error. Raw text: {text}")
         return {
-            "narrative": "SYSTEM ERROR: DATA CORRUPTION DETECTED. (AI Generation Failed)",
+            "narrative": "SYSTEM ERROR: DATABANK CORRUPTED. (AI Generation Failed)",
             "test_narrative": "Inconclusive result due to signal interference.",
             "diagnosis_list": [],
             "initial_test_options": []
@@ -62,7 +64,7 @@ def clean_and_parse_json(text):
 def get_sys_instruction():
     return "You are a Medical Simulation Engine. You must output ONLY valid JSON without markdown formatting."
 
-defSx generate_case(difficulty: str):
+def generate_case(difficulty: str):
     model = genai.GenerativeModel(MODEL_NAME, system_instruction=get_sys_instruction())
     
     prompt = f"""
@@ -151,7 +153,6 @@ async def submit_test(req: TestSubmission):
     
     result = analyze_test_result(game['case'], req.test_name)
     
-    # Store history
     game['log'].append({"type": "action", "text": f"Running {req.test_name}..."})
     game['log'].append({"type": "narrative", "text": result['narrative']})
     
@@ -167,7 +168,7 @@ async def submit_diagnosis(req: DiagnosisSubmission):
     
     correct_illness = game['case']['illness_name']
     
-    # Simple fuzzy matching (case insensitive)
+    # Fuzzy match
     is_correct = (req.diagnosis_name.lower() in correct_illness.lower()) or \
                  (correct_illness.lower() in req.diagnosis_name.lower())
     
@@ -197,7 +198,6 @@ async def submit_diagnosis(req: DiagnosisSubmission):
                 "hp": game['hp'],
                 "message": "INCORRECT DIAGNOSIS. Patient condition worsening.",
                 "analysis": "That diagnosis does not match the clinical findings. Try a different test.",
-                # CRITICAL: Send back the original test options so user can try again
                 "test_options": game['case']['initial_test_options']
             }
             
