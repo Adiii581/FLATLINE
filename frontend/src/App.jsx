@@ -6,30 +6,41 @@ import ActionDeck from './components/ActionDeck';
 const API_URL = 'http://localhost:8000';
 
 // --- BACKGROUND PULSE ANIMATION COMPONENT ---
+// Uses a "Sliding Window" technique with 2 identical SVGs to create a perfect seamless loop
 const BackgroundPulse = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center opacity-50">
-    <svg
-      viewBox="0 0 1200 200"
-      className="w-full h-full text-bio-green drop-shadow-[0_0_15px_rgba(0,255,0,0.8)]"
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M-100,100 L100,100 L120,40 L140,160 L160,100 L250,100 L270,10 L290,190 L310,100 L1300,100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        vectorEffect="non-scaling-stroke"
-        className="animate-ekg"
-      />
-    </svg>
+  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-70">
+    <div className="flex w-[200%] h-full animate-ekg-scroll">
+      
+      {/* Segment 1 */}
+      <svg viewBox="0 0 1000 200" className="w-1/2 h-full text-bio-green drop-shadow-[0_0_8px_rgba(0,255,0,0.9)]" preserveAspectRatio="none">
+        <path
+          d="M0,100 L100,100 L120,20 L140,180 L160,100 L400,100 L420,60 L440,140 L460,100 L800,100 L820,30 L840,170 L860,100 L1000,100"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="5" 
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+
+      {/* Segment 2 (Identical Copy for Seamless Loop) */}
+      <svg viewBox="0 0 1000 200" className="w-1/2 h-full text-bio-green drop-shadow-[0_0_8px_rgba(0,255,0,0.9)]" preserveAspectRatio="none">
+        <path
+          d="M0,100 L100,100 L120,20 L140,180 L160,100 L400,100 L420,60 L440,140 L460,100 L800,100 L820,30 L840,170 L860,100 L1000,100"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="5" 
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+
+    </div>
     <style>{`
-      @keyframes ekgMove {
-        0% { stroke-dashoffset: 2400; }
-        100% { stroke-dashoffset: 0; }
+      @keyframes ekgScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
       }
-      .animate-ekg {
-        stroke-dasharray: 1200 1200;
-        animation: ekgMove 4s linear infinite;
+      .animate-ekg-scroll {
+        animation: ekgScroll 5s linear infinite;
       }
     `}</style>
   </div>
@@ -107,7 +118,7 @@ function App() {
         setPhase('END');
       } else {
         setHp(data.hp);
-        // FIXED: Removed redundant "INCORRECT." text prefix
+        // Correctly formatted incorrect message
         addLog('diagnosis', `${data.message}`);
         addLog('system', 'RE-INITIALIZING TEST PROTOCOLS...');
         
@@ -126,9 +137,9 @@ function App() {
       {/* Background Pulse Animation (Visible only in Start Screen) */}
       {phase === 'START' && <BackgroundPulse />}
 
-      {/* Main Title - Only visible in START phase now */}
+      {/* Main Title - Lowered significantly (mt-32) to fix spacing */}
       {phase === 'START' && (
-        <h1 className="text-4xl text-center mb-12 mt-24 font-bold tracking-widest text-shadow-glow z-20 relative">
+        <h1 className="text-4xl text-center mb-12 mt-32 font-bold tracking-widest text-shadow-glow z-20 relative">
           BIO-LOGIC PROTOCOL v2.5
         </h1>
       )}
