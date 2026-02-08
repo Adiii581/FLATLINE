@@ -14,14 +14,14 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Use a widely available model
-MODEL_NAME = 'gemini-2.5-flash'
+MODEL_NAME = 'gemini-1.5-flash' 
 
 app = FastAPI()
 
 # Enable CORS for Frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -75,7 +75,7 @@ def generate_case(difficulty: str):
       "patient_intro": "2-3 sentences describing patient age, chief complaint, and initial vitals.",
       "correct_test": "The single most definitive test for this illness",
       "symptoms_hidden": "List of internal symptoms found only via tests",
-      "explanation_correct": "Educational explanation of why this illness matches the symptoms.",
+      "explanation_correct": "Brief 1-2 sentence medical explanation of why the symptoms confirm this diagnosis.",
       "explanation_wrong": "Why other similar diagnoses are incorrect.",
       "initial_test_options": [
         "Test Option 1 (The Correct One)",
@@ -184,10 +184,11 @@ async def submit_diagnosis(req: DiagnosisSubmission):
         
         if game['hp'] <= 0:
             game['status'] = "LOST"
+            # NEW: Explicitly formatted to include Illness + Test + Short Explanation
             response_data = {
                 "status": "LOSE",
-                "message": f"PATIENT DECEASED. The correct illness was {correct_illness}.",
-                "analysis": f"The correct test was '{game['case']['correct_test']}'. {game['case']['explanation_correct']}"
+                "message": "PATIENT DECEASED.",
+                "analysis": f"The patient actually had {correct_illness}. The definitive test required was {game['case']['correct_test']}. {game['case']['explanation_correct']}"
             }
         else:
             game['status'] = "PLAYING"
