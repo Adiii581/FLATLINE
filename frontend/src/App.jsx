@@ -36,8 +36,8 @@ const BackgroundPulse = () => (
     </div>
     <style>{`
       @keyframes ekgScroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+        0% { transform: translateX(-50%); }
+        100% { transform: translateX(0); }
       }
       .animate-ekg-scroll {
         animation: ekgScroll 5s linear infinite;
