@@ -6,7 +6,7 @@ import ActionDeck from './components/ActionDeck';
 const API_URL = 'http://localhost:8000';
 
 // --- BACKGROUND PULSE ANIMATION COMPONENT ---
-// Uses a "Sliding Window" technique with 2 identical SVGs to create a perfect seamless loop
+// Updated to "Flatline" theme: Mostly flat line with tiny, weak tremors
 const BackgroundPulse = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-70">
     <div className="flex w-[200%] h-full animate-ekg-scroll">
@@ -14,7 +14,7 @@ const BackgroundPulse = () => (
       {/* Segment 1 */}
       <svg viewBox="0 0 1000 200" className="w-1/2 h-full text-bio-green drop-shadow-[0_0_8px_rgba(0,255,0,0.9)]" preserveAspectRatio="none">
         <path
-          d="M0,100 L100,100 L120,20 L140,180 L160,100 L400,100 L420,60 L440,140 L460,100 L800,100 L820,30 L840,170 L860,100 L1000,100"
+          d="M0,100 L200,100 L210,95 L220,105 L230,100 L500,100 L510,92 L520,108 L530,100 L800,100 L810,98 L820,102 L830,100 L1000,100"
           fill="none"
           stroke="currentColor"
           strokeWidth="5" 
@@ -25,7 +25,7 @@ const BackgroundPulse = () => (
       {/* Segment 2 (Identical Copy for Seamless Loop) */}
       <svg viewBox="0 0 1000 200" className="w-1/2 h-full text-bio-green drop-shadow-[0_0_8px_rgba(0,255,0,0.9)]" preserveAspectRatio="none">
         <path
-          d="M0,100 L100,100 L120,20 L140,180 L160,100 L400,100 L420,60 L440,140 L460,100 L800,100 L820,30 L840,170 L860,100 L1000,100"
+          d="M0,100 L200,100 L210,95 L220,105 L230,100 L500,100 L510,92 L520,108 L530,100 L800,100 L810,98 L820,102 L830,100 L1000,100"
           fill="none"
           stroke="currentColor"
           strokeWidth="5" 
@@ -140,7 +140,7 @@ function App() {
       {/* Main Title - Lowered significantly (mt-32) to fix spacing */}
       {phase === 'START' && (
         <h1 className="text-4xl text-center mb-12 mt-32 font-bold tracking-widest text-shadow-glow z-20 relative">
-          BIO-LOGIC PROTOCOL v2.5
+          FLATLINE v1.0
         </h1>
       )}
 
@@ -184,7 +184,7 @@ function App() {
             </div>
             
             <button onClick={() => window.location.reload()} className="border-2 px-10 py-4 hover:bg-white hover:text-black uppercase font-bold text-2xl tracking-widest transition-colors">
-              REBOOT SYSTEM
+              PLAY AGAIN
             </button>
           </div>
         </div>
