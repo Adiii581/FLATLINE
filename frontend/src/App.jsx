@@ -62,7 +62,8 @@ function App() {
 
   const startGame = async (diff) => {
     setDifficulty(diff);
-    addLog('system', `INITIALIZING BIO-LOGIC ENGINE (${diff.toUpperCase()})...`);
+    // UPDATED: All Caps
+    addLog('system', 'RETRIEVING PATIENT SYMPTOMS...');
     
     try {
       const res = await fetch(`${API_URL}/start_game`, {
@@ -120,7 +121,8 @@ function App() {
         setHp(data.hp);
         // Correctly formatted incorrect message
         addLog('diagnosis', `${data.message}`);
-        addLog('system', 'RE-INITIALIZING TEST PROTOCOLS...');
+        // UPDATED: All Caps
+        addLog('system', 'RE-INITIALIZING TESTS...');
         
         if (data.test_options) {
              setOptions(data.test_options);
@@ -137,10 +139,10 @@ function App() {
       {/* Background Pulse Animation (Visible only in Start Screen) */}
       {phase === 'START' && <BackgroundPulse />}
 
-      {/* Main Title - Lowered significantly (mt-32) to fix spacing */}
+      {/* Main Title */}
       {phase === 'START' && (
-        <h1 className="text-4xl text-center mb-12 mt-32 font-bold tracking-widest text-shadow-glow z-20 relative">
-          FLATLINE v1.0
+        <h1 className="text-6xl text-center mb-12 mt-32 font-bold tracking-widest text-shadow-glow z-20 relative">
+          FLATLINE
         </h1>
       )}
 
