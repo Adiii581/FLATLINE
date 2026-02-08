@@ -1,6 +1,6 @@
 # FLATLINE
 
-FLATLINE is a retro/arcade style medical simulation/game where players uses tests and diagnoses to solve infinite, AI-generated patient cases. This game is powered by Google Gemini API and a FastAPI backend.
+FLATLINE is a retro/arcade style medical simulation/game that teaches its players to solve realistic patient scenarios by giving them the ability to run medical tests and select diagnoses. 
 
 ## Tech Stack
 
